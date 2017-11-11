@@ -12,7 +12,14 @@ module.exports = (env) => {
         },
         plugins: [
             new CleanWebpackPlugin(['public']),
-            new HtmlWebpackPlugin({}),
+            new HtmlWebpackPlugin({
+                inject: false,
+                template: require('html-webpack-template'),
+                title: 'Ultimate-Brainz App',
+                links: [
+                    'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css'
+                ]
+            }),
             new Webpack.NamedModulesPlugin(),
             new Webpack.HotModuleReplacementPlugin()
         ],
@@ -50,6 +57,8 @@ module.exports = (env) => {
                 }]
             }]
         },
+
+        devtool: 'inline-source-map',
 
         devServer: {
             contentBase: Path.resolve(__dirname, 'public'),

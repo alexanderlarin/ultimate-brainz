@@ -1,29 +1,51 @@
 import React, { Component } from 'react';
-import { NavLink, Route, Switch } from 'react-router-dom'
 import { className } from 'css-classname';
+import { NavLink, Route, Switch } from 'react-router-dom'
+import { LinkContainer } from 'react-router-bootstrap';
+import { Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 
 import { Home } from './Home';
 import { Search } from './Search';
 
-import styles from './App.scss';
+const classNames = (...args) => className(require('./App.scss'), ...args);
 
 
 export class AppComponent extends Component {
     render () {
         return (
-            <div className={ className(styles, 'container') }>
-                <header>
-                    <h1>Ultimate Guitar, Brainz and <span>Skillzzz</span></h1>
-                    <nav>
-                        <NavLink to={ '/' }>Home</NavLink>>
-                        <NavLink to={ '/search' }>Search</NavLink>
-                    </nav>
-                </header>
-                <main>
-                    <Switch>
-                        <Route path='/' exact={ true } component={ Home } />
-                        <Route path='/search' component={ Search } />
-                    </Switch>
+            <div>
+                <Navbar inverse={ true } fixedTop={ true }>
+                    <Navbar.Header>
+                        <NavLink to={ '/' }>
+                            <Navbar.Brand>
+                                ultimate-brainz
+                            </Navbar.Brand>
+                        </NavLink>
+                        <Navbar.Toggle />
+                    </Navbar.Header>
+                    <Navbar.Collapse>
+                        <Nav>
+                            <LinkContainer to={ '/albums' }>
+                                <NavItem eventKey={ 1 }>Albums</NavItem>
+                            </LinkContainer>
+                            <LinkContainer to={ '/search' }>
+                                <NavItem eventKey={ 2 }>Search</NavItem>
+                            </LinkContainer>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Navbar>
+                <main className={ classNames('content') }>
+                    <Grid>
+                        <Switch>
+                            <Route path='/' exact={ true } component={ Home } />
+                            <Route path='/albums' component={ Home } />
+                            <Route path='/search' component={ Search } />
+                        </Switch>
+                        <hr />
+                        <footer>
+                            <p>All Rights Reserved. Alexander Larin. 2017 =)</p>
+                        </footer>
+                    </Grid>
                 </main>
             </div>
         );
