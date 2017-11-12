@@ -34,19 +34,19 @@ export class AppComponent extends Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <main className={ classNames('content') }>
-                    <Grid>
+                <Grid className={ classNames('content') }>
+                    <main>
                         <Switch>
                             <Route path='/' exact={ true } component={ Home } />
                             <Route path='/albums' component={ Home } />
                             <Route path='/search' component={ Search } />
                         </Switch>
-                        <hr />
-                        <footer>
-                            <p>All Rights Reserved. Alexander Larin. 2017 =)</p>
-                        </footer>
-                    </Grid>
-                </main>
+                    </main>
+                    <hr />
+                    <footer>
+                        <p>All Rights Reserved. Alexander Larin. 2017 =)</p>
+                    </footer>
+                </Grid>
             </div>
         );
     }
