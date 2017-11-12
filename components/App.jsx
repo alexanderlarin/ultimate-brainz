@@ -14,7 +14,7 @@ export class AppComponent extends Component {
     render () {
         return (
             <div>
-                <Navbar inverse={ true } fixedTop={ true }>
+                <Navbar inverse={ true } fixedTop={ true } collapseOnSelect={ true }>
                     <Navbar.Header>
                         <NavLink to={ '/' }>
                             <Navbar.Brand>

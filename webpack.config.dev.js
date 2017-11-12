@@ -16,6 +16,10 @@ module.exports = (env) => {
                 inject: false,
                 template: require('html-webpack-template'),
                 title: 'Ultimate-Brainz App',
+                meta: [{
+                    name: 'viewport',
+                    content: 'width=device-width, initial-scale=1.0'
+                }],
                 links: [
                     'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css'
                 ]
