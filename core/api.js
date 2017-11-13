@@ -10,7 +10,7 @@ export class Api {
     searchAlbums(title, limit, offset) {
         return new Promise((resolve, reject) => {
                 Client
-                    .get('http://musicbrainz.org/ws/2/release-group/')
+                    .get('http://musicbrainz.org/ws/2/release/')
                     .query({ fmt: 'json', limit, offset })
                     .query(`query=release:${encodeURIComponent(title)}`)
                     .end((err, res) => {
@@ -19,10 +19,10 @@ export class Api {
                         return reject(new HttpError(err.status, res ? (res.body && res.body.error) : err.message));
                     });
             })
-            .then((response) => ({ count: response.count, items: response['release-groups'] }));
+            .then((response) => ({ count: response.count, items: response['releases'] }));
     }
 
     getAlbumCover(id) {
-        return Promise.resolve({ cover: 'http://www.ambilogo.com/wp-content/uploads/2012/03/muse-absolution-cover-7506.jpg' });
+        return Promise.resolve({ cover: `http://coverartarchive.org/release/${id}/front` });
     }
 }
