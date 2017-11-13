@@ -87,30 +87,41 @@ class InputComponent extends Component {
 
 
 export class SearchComponent extends Component {
-    state = {
-        query: ''
-    };
+    componentDidMount() {
+        this.search(this.props.query);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const { query } = nextProps;
+        if (this.props.query !== query)
+            this.search(query);
+    }
 
     handleQuery(query) {
-        const { searchAlbums } = this.props;
-        this.setState({ query });
-        searchAlbums(query, 16);
+        const { history } = this.props;
+        history.replace({ ...history.location, search: new URLSearchParams({ query }).toString() });
     }
 
     handleMore() {
-        const { items, searchAlbums } = this.props;
-        const { query } = this.state;
+        const { query, items, searchAlbums } = this.props;
         searchAlbums(query, 8, !items ? 0 : items.size);
     }
 
+    search(query) {
+        const { searchAlbums, clearSearch } = this.props;
+        clearSearch();
+        if (query)
+            searchAlbums(query, 16);
+    }
+
     render() {
-        const { more, items } = this.props;
+        const { query, more, items } = this.props;
         return (
             <Grid fluid={ true }>
                 <Row>
                     <Col>
                         <p>Search, Hard and Deep Search</p>
-                        <InputComponent delay={ 500 } onQuery={ ::this.handleQuery }/>
+                        <InputComponent value={ query } delay={ 500 } onQuery={ ::this.handleQuery }/>
                     </Col>
                 </Row>
                 <InfiniteScroll element='div' initialLoad={ false } hasMore={ more } loadMore={ ::this.handleMore } loader={ <div>Loading...</div> }>
@@ -142,16 +153,20 @@ export class SearchComponent extends Component {
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
 
-import { searchAlbums } from '../core/actions/search';
+import { searchAlbums, clearSearch } from '../core/actions/search';
 
 
-export const Search = connect(
-    (state, ownProps) => ({
-        more: state.getIn(['search', 'more']),
-        items: state.getIn(['search', 'items'])
-    }),
+export const Search = withRouter(connect(
+    (state, ownProps) => {
+        return {
+            query: new URLSearchParams(ownProps.location.search).get('query') || '',
+            more: state.getIn(['search', 'more']),
+            items: state.getIn(['search', 'items'])
+        };
+    },
     (dispatch, ownProps) => bindActionCreators({
-        searchAlbums
+        searchAlbums, clearSearch
     }, dispatch)
-)(SearchComponent);
+)(SearchComponent));
