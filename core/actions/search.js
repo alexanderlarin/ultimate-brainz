@@ -2,6 +2,8 @@ export const SEARCH_ALBUMS_REQUEST = 'SEARCH_ALBUMS_REQUEST';
 export const SEARCH_ALBUMS_SUCCESS = 'SEARCH_ALBUMS_SUCCESS';
 export const SEARCH_ALBUMS_FAILURE = 'SEARCH_ALBUMS_FAILURE';
 
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+
 export function searchAlbums(query, limit, offset=0) {
     return {
         type: SEARCH_ALBUMS_REQUEST,
@@ -20,5 +22,12 @@ export function searchAlbumsFailure(query, offset, message, status) {
     return {
         type: SEARCH_ALBUMS_FAILURE,
         error: { query, offset, message, status }
+    };
+}
+
+export function clearSearch() {
+    return {
+        type: CLEAR_SEARCH,
+        payload: { }
     };
 }

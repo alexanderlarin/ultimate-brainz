@@ -1,18 +1,20 @@
 import { Map, List, fromJS } from 'immutable';
 
 import { GET_ALBUM_COVER_SUCCESS } from "../actions/covers";
-import { SEARCH_ALBUMS_REQUEST, SEARCH_ALBUMS_SUCCESS, SEARCH_ALBUMS_FAILURE } from '../actions/search';
+import { SEARCH_ALBUMS_REQUEST, SEARCH_ALBUMS_SUCCESS, SEARCH_ALBUMS_FAILURE, CLEAR_SEARCH } from '../actions/search';
 
 
 export default function(state = new Map(), action) {
     switch (action.type) {
+        case CLEAR_SEARCH:
+            return state.remove('loading').remove('error').remove('more').remove('items');
         case SEARCH_ALBUMS_REQUEST:
             return state.set('loading', true).remove('error').remove('more');
         case SEARCH_ALBUMS_SUCCESS: {
             const { offset, count, items } = action.payload;
             return state.remove('loading').remove('error')
                 .set('more', offset + items.length < count)
-                .update('items', new List(), (value) => !offset ? fromJS(items) : value.concat(fromJS(items)));
+                .update('items', new List(), (value) => value.concat(fromJS(items)));
         }
         case SEARCH_ALBUMS_FAILURE:
             return state.remove('loading').remove('more').set('error', new Map(action.error));
