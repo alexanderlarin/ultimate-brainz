@@ -84,13 +84,21 @@ class InputComponent extends Component {
 
 export class SearchComponent extends Component {
     render() {
+        const { items, searchAlbums } = this.props;
         return (
             <Grid>
                 <Row>
                     <Col>
                         <p>Search, Hard and Deep Search</p>
-                        <InputComponent delay={ 500 } />
+                        <InputComponent delay={ 500 } onQuery={ (query) => searchAlbums(query, 16) }/>
                     </Col>
+                </Row>
+                <Row>
+                    {
+                        !items ? null : items.map((item) =>
+                            <Col key={ item.get('id') } lg={ 3 }>{ item.get('title') }</Col>
+                        )
+                    }
                 </Row>
             </Grid>
         );
@@ -101,10 +109,14 @@ export class SearchComponent extends Component {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import { searchAlbums } from '../core/actions/search';
+
 
 export const Search = connect(
     (state, ownProps) => ({
+        items: state.getIn(['search', 'items'])
     }),
     (dispatch, ownProps) => bindActionCreators({
+        searchAlbums
     }, dispatch)
 )(SearchComponent);

@@ -8,13 +8,13 @@ import {
 
 
 function* fetchSearchAlbums(api, action) {
+    const { query, limit, offset } = action.payload;
     try {
-        const {} = action.payload;
-        yield call([api, api.searchAlbums], );
-        yield put(searchAlbumsSuccess());
+        const { items } = yield call([api, api.searchAlbums], query, limit, offset);
+        yield put(searchAlbumsSuccess(query, offset, items));
     }
     catch ({ message, status }) {
-        yield put(searchAlbumsFailure(message, status));
+        yield put(searchAlbumsFailure(query, offset, message, status));
     }
 }
 

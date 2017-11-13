@@ -1,4 +1,4 @@
-import { Map } from 'immutable';
+import { Map, fromJS } from 'immutable';
 
 import {
     SEARCH_ALBUMS_REQUEST, SEARCH_ALBUMS_SUCCESS, SEARCH_ALBUMS_FAILURE
@@ -10,8 +10,8 @@ export default function(state = new Map(), action) {
         case SEARCH_ALBUMS_REQUEST:
             return state.set('loading', true).remove('error');
         case SEARCH_ALBUMS_SUCCESS: {
-            const {} = action.payload;
-            return state.remove('loading').remove('error').set('items', []);
+            const { items } = action.payload;
+            return state.remove('loading').remove('error').set('items', fromJS(items));
         }
         case SEARCH_ALBUMS_FAILURE:
             return state.remove('loading').set('error', new Map(action.error));
