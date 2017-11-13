@@ -19,7 +19,7 @@ export class Api {
                         return reject(new HttpError(err.status, res ? (res.body && res.body.error) : err.message));
                     });
             })
-            .then((response) => ({ count: response.count, items: response['releases'] }));
+            .then((response) => ({ count: response.count, items: response.releases }));
     }
 
     getAlbumCover(id) {

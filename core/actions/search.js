@@ -9,10 +9,10 @@ export function searchAlbums(query, limit, offset=0) {
     };
 }
 
-export function searchAlbumsSuccess(query, offset, items) {
+export function searchAlbumsSuccess(query, offset, count, items) {
     return {
         type: SEARCH_ALBUMS_SUCCESS,
-        payload: { query, offset, items }
+        payload: { query, offset, count, items}
     };
 }
 

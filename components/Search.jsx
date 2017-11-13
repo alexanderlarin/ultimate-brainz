@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import InfiniteScroll from 'react-infinite-scroller';
 import {
     Grid, Col, Row, Clearfix,
     FormGroup, InputGroup, FormControl, Button, Glyphicon
@@ -86,33 +87,53 @@ class InputComponent extends Component {
 
 
 export class SearchComponent extends Component {
-    render() {
+    state = {
+        query: ''
+    };
+
+    handleQuery(query) {
+        const { searchAlbums } = this.props;
+        this.setState({ query });
+        searchAlbums(query, 16);
+    }
+
+    handleMore() {
         const { items, searchAlbums } = this.props;
+        const { query } = this.state;
+        searchAlbums(query, 8, !items ? 0 : items.size);
+    }
+
+    render() {
+        const { more, items } = this.props;
         return (
-            <Grid>
+            <Grid fluid={ true }>
                 <Row>
                     <Col>
                         <p>Search, Hard and Deep Search</p>
-                        <InputComponent delay={ 500 } onQuery={ (query) => searchAlbums(query, 16) }/>
+                        <InputComponent delay={ 500 } onQuery={ ::this.handleQuery }/>
                     </Col>
                 </Row>
-                <Row>
-                    {
-                        !items ? null : items.reduce((items, item, key) => {
-                            if (key && !((key % 4)))
-                                items.push(<Clearfix key={ key } />);
-                            items.push(
-                                <Col key={item.get('id')} lg={ 3 }>
-                                    <div className={classNames('cover')}>
-                                        <img src={item.getIn(['cover', 'image'])}/>
-                                    </div>
-                                    <p>{item.get('title')}</p>
-                                </Col>
-                            );
-                            return items;
-                        }, [])
-                    }
-                </Row>
+                <InfiniteScroll element='div' initialLoad={ false } hasMore={ more } loadMore={ ::this.handleMore } loader={ <div>Loading...</div> }>
+                    <Grid fluid={ true }>
+                        <Row>
+                            {
+                                !items ? null : items.reduce((items, item, key) => {
+                                    if (key && !((key % 4)))
+                                        items.push(<Clearfix key={ key } />);
+                                    items.push(
+                                        <Col key={ item.get('id') } lg={ 3 }>
+                                            <div className={classNames('cover')}>
+                                                <img src={ item.getIn(['cover', 'image']) }/>
+                                            </div>
+                                            <p>{ item.get('title') }</p>
+                                        </Col>
+                                    );
+                                    return items;
+                                }, [])
+                            }
+                        </Row>
+                    </Grid>
+                </InfiniteScroll>
             </Grid>
         );
     }
@@ -127,6 +148,7 @@ import { searchAlbums } from '../core/actions/search';
 
 export const Search = connect(
     (state, ownProps) => ({
+        more: state.getIn(['search', 'more']),
         items: state.getIn(['search', 'items'])
     }),
     (dispatch, ownProps) => bindActionCreators({

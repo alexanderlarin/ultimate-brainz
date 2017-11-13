@@ -11,8 +11,8 @@ import {
 function* fetchSearchAlbums(api, action) {
     const { query, limit, offset } = action.payload;
     try {
-        const { items } = yield call([api, api.searchAlbums], query, limit, offset);
-        yield put(searchAlbumsSuccess(query, offset, items));
+        const { count, items } = yield call([api, api.searchAlbums], query, limit, offset);
+        yield put(searchAlbumsSuccess(query, offset, count, items));
     }
     catch ({ message, status }) {
         yield put(searchAlbumsFailure(query, offset, message, status));
