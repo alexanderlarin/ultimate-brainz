@@ -21,4 +21,8 @@ export class Api {
             })
             .then((response) => ({ count: response.count, items: response['release-groups'] }));
     }
+
+    getAlbumCover(id) {
+        return Promise.resolve({ cover: 'http://www.ambilogo.com/wp-content/uploads/2012/03/muse-absolution-cover-7506.jpg' });
+    }
 }

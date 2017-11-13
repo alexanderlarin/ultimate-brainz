@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import {
-    Grid, Col, Row,
+    Grid, Col, Row, Clearfix,
     FormGroup, InputGroup, FormControl, Button, Glyphicon
 } from 'react-bootstrap';
+import { className } from 'css-classname';
+
+const classNames = (...args) => className(require('./Search.scss'), ...args);
 
 
 class InputComponent extends Component {
@@ -95,9 +98,19 @@ export class SearchComponent extends Component {
                 </Row>
                 <Row>
                     {
-                        !items ? null : items.map((item) =>
-                            <Col key={ item.get('id') } lg={ 3 }>{ item.get('title') }</Col>
-                        )
+                        !items ? null : items.reduce((items, item, key) => {
+                            if (key && !((key % 4)))
+                                items.push(<Clearfix key={ key } />);
+                            items.push(
+                                <Col key={item.get('id')} lg={ 3 }>
+                                    <div className={classNames('cover')}>
+                                        <img src={item.getIn(['cover', 'image'])}/>
+                                    </div>
+                                    <p>{item.get('title')}</p>
+                                </Col>
+                            );
+                            return items;
+                        }, [])
                     }
                 </Row>
             </Grid>
