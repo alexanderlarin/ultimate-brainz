@@ -22,6 +22,10 @@ export class Api {
             .then((response) => ({ count: response.count, items: response.releases }));
     }
 
+    getAlbum(id) {
+        return Promise.resolve();
+    }
+
     getAlbumCover(id) {
         return Promise.resolve({ cover: `http://coverartarchive.org/release/${id}/front` });
     }
