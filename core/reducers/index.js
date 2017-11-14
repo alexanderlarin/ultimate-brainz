@@ -8,3 +8,7 @@ export const makeReducers = () => combineReducers({
     albums,
     search,
 });
+
+export const persistPaths = [
+    'albums'
+];
