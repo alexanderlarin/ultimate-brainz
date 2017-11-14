@@ -1,9 +1,10 @@
 import { call, put, takeEvery } from 'redux-saga/effects';
 
 import {
+    ADD_ALBUM_REQUEST,
     GET_ALBUM_REQUEST,
 
-    getAlbumSuccess, getAlbumFailure
+    getAlbum, getAlbumSuccess, getAlbumFailure
 } from '../actions/albums';
 
 
@@ -22,8 +23,19 @@ function* watchFetchAlbum(...args) {
     yield takeEvery(GET_ALBUM_REQUEST, fetchAlbum, ...args);
 }
 
+
+function* waitAddAlbum(api, action) {
+    const { id } = action.payload;
+    yield put(getAlbum(id));
+}
+
+function* watchWaitAddAlbum(...args) {
+    yield takeEvery(ADD_ALBUM_REQUEST, waitAddAlbum, ...args);
+}
+
 export default function* (...args) {
     return yield [
         call(watchFetchAlbum, ...args),
+        call(watchWaitAddAlbum, ...args)
     ];
 }
