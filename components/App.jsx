@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 
 import { Home } from './Home';
+import { Albums } from './Albums';
 import { Search } from './Search';
 
 const classNames = (...args) => className(require('./App.scss'), ...args);
@@ -26,7 +27,7 @@ export class AppComponent extends Component {
                     <Navbar.Collapse>
                         <Nav>
                             <LinkContainer to={ '/albums' }>
-                                <NavItem eventKey={ 1 }>Albums</NavItem>
+                                <NavItem eventKey={ 1 }> My Albums</NavItem>
                             </LinkContainer>
                             <LinkContainer to={ '/search' }>
                                 <NavItem eventKey={ 2 }>Search</NavItem>
@@ -38,7 +39,7 @@ export class AppComponent extends Component {
                     <main>
                         <Switch>
                             <Route path='/' exact={ true } component={ Home } />
-                            <Route path='/albums' component={ Home } />
+                            <Route path='/albums' component={ Albums } />
                             <Route path='/search' component={ Search } />
                         </Switch>
                     </main>
