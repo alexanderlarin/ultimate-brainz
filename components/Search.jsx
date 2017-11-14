@@ -115,7 +115,7 @@ export class SearchComponent extends Component {
     }
 
     render() {
-        const { query, more, items } = this.props;
+        const { query, more, items, addAlbum } = this.props;
         return (
             <Grid fluid={ true }>
                 <Row>
@@ -137,6 +137,13 @@ export class SearchComponent extends Component {
                                                 <img src={ item.getIn(['cover', 'image']) }/>
                                             </div>
                                             <p>{ item.get('title') }</p>
+                                            <p>
+                                                <Button bsSize={ 'xsmall' } bsStyle={ 'success' }
+                                                        onClick={ () => addAlbum(item.get('id')) }
+                                                >
+                                                    <Glyphicon glyph="plus" />
+                                                </Button>
+                                            </p>
                                         </Col>
                                     );
                                     return items;
@@ -155,6 +162,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
+import { addAlbum } from '../core/actions/albums';
 import { searchAlbums, clearSearch } from '../core/actions/search';
 
 
@@ -167,6 +175,6 @@ export const Search = withRouter(connect(
         };
     },
     (dispatch, ownProps) => bindActionCreators({
-        searchAlbums, clearSearch
+        addAlbum, searchAlbums, clearSearch
     }, dispatch)
 )(SearchComponent));
