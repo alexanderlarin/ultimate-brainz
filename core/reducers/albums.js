@@ -13,7 +13,7 @@ export default function(state = new Map(), action) {
             const { id } = action.payload;
             return state.update('items', new List(), (items) => {
                 const idx = items.findIndex((item) => item.get('id') === id);
-                return idx !== -1 ? items : items.update(idx, new Map(),
+                return idx === -1 ? items : items.update(idx, new Map(),
                     (value) => value.remove('loading').remove('error')
                 );
 
@@ -23,8 +23,8 @@ export default function(state = new Map(), action) {
             const { id, item } = action.payload;
             return state.update('items', new List(), (items) => {
                 const idx = items.findIndex((item) => item.get('id') === id);
-                return idx !== -1 ? items : items.update(idx, new Map(),
-                    (value) => value.remove('loading').remove('error').mergeDeep(item)
+                return idx === -1 ? items : items.update(idx, new Map(),
+                    (value) => value.remove('loading').remove('error').mergeDeep(fromJS(item))
                 );
             });
         }
@@ -32,7 +32,7 @@ export default function(state = new Map(), action) {
             const { id, message } = action.error;
             return state.update('items', new List(), (items) => {
                 const idx = items.findIndex((item) => item.get('id') === id);
-                return idx !== -1 ? items : items.update(idx, new Map(),
+                return idx === -1 ? items : items.update(idx, new Map(),
                     (value) => value.remove('loading').set('error', message)
                 );
             });
@@ -41,7 +41,7 @@ export default function(state = new Map(), action) {
             const { id, cover } = action.payload;
             return state.update('items', new List(), (items) => {
                 const idx = items.findIndex((item) => item.get('id') === id);
-                return idx !== -1 ? items : items.setIn([idx, 'cover', 'image'], cover);
+                return idx === -1 ? items : items.setIn([idx, 'cover', 'image'], cover);
             });
         }
         case ADD_ALBUM_REQUEST: {
