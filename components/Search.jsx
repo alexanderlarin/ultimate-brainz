@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import InfiniteScroll from 'react-infinite-scroller';
 import {
-    Grid, Col, Row, Clearfix,
+    Grid, Col, Row,
     FormGroup, InputGroup, FormControl, Button, Glyphicon
 } from 'react-bootstrap';
 import { className } from 'css-classname';
+
+import { AlbumsCollectionComponent } from './Bricks';
 
 const classNames = (...args) => className(require('./Search.scss'), ...args);
 
@@ -115,7 +117,7 @@ export class SearchComponent extends Component {
     }
 
     render() {
-        const { query, more, items } = this.props;
+        const { query, more, items, addAlbum, removeAlbum } = this.props;
         return (
             <Grid fluid={ true }>
                 <Row>
@@ -125,25 +127,7 @@ export class SearchComponent extends Component {
                     </Col>
                 </Row>
                 <InfiniteScroll element='div' initialLoad={ false } hasMore={ more } loadMore={ ::this.handleMore } loader={ <div>Loading...</div> }>
-                    <Grid fluid={ true }>
-                        <Row>
-                            {
-                                !items ? null : items.reduce((items, item, key) => {
-                                    if (key && !((key % 4)))
-                                        items.push(<Clearfix key={ key } />);
-                                    items.push(
-                                        <Col key={ item.get('id') } lg={ 3 }>
-                                            <div className={classNames('cover')}>
-                                                <img src={ item.getIn(['cover', 'image']) }/>
-                                            </div>
-                                            <p>{ item.get('title') }</p>
-                                        </Col>
-                                    );
-                                    return items;
-                                }, [])
-                            }
-                        </Row>
-                    </Grid>
+                    <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
                 </InfiniteScroll>
             </Grid>
         );
@@ -155,6 +139,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
+import { addAlbum, removeAlbum } from '../core/actions/albums';
 import { searchAlbums, clearSearch } from '../core/actions/search';
 
 
@@ -167,6 +152,7 @@ export const Search = withRouter(connect(
         };
     },
     (dispatch, ownProps) => bindActionCreators({
+        addAlbum, removeAlbum,
         searchAlbums, clearSearch
     }, dispatch)
 )(SearchComponent));

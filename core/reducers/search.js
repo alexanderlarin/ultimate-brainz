@@ -1,12 +1,15 @@
 import { Map, List, fromJS } from 'immutable';
 
-import { GET_ALBUM_COVER_SUCCESS } from "../actions/covers";
-import { SEARCH_ALBUMS_REQUEST, SEARCH_ALBUMS_SUCCESS, SEARCH_ALBUMS_FAILURE, CLEAR_SEARCH } from '../actions/search';
+import { GET_ALBUM_COVER_SUCCESS } from '../actions/covers';
+import {
+    CLEAR_SEARCH_REQUEST,
+    SEARCH_ALBUMS_REQUEST, SEARCH_ALBUMS_SUCCESS, SEARCH_ALBUMS_FAILURE
+} from '../actions/search';
 
 
 export default function(state = new Map(), action) {
     switch (action.type) {
-        case CLEAR_SEARCH:
+        case CLEAR_SEARCH_REQUEST:
             return state.remove('loading').remove('error').remove('more').remove('items');
         case SEARCH_ALBUMS_REQUEST:
             return state.set('loading', true).remove('error').remove('more');
