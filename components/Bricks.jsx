@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-    Grid, Col, Row, Clearfix,
-    Button, Glyphicon
-} from 'react-bootstrap';
+import { Grid, Col, Row } from 'react-bootstrap';
 import { className } from 'css-classname';
 
 const classNames = (...args) => className(require('./Bricks.scss'), ...args);
@@ -11,43 +8,40 @@ const classNames = (...args) => className(require('./Bricks.scss'), ...args);
 
 export class AlbumsCollectionComponent extends React.Component {
     static propTypes = {
-        items: PropTypes.object,
-        addAlbum: PropTypes.func,
-        removeAlbum: PropTypes.func
+        items: PropTypes.object
     };
 
     render() {
-        const { items, addAlbum, removeAlbum } = this.props;
+        const { items } = this.props;
         return (
             <Grid fluid={ true }>
                 <Row>
                     {
-                        !items ? null : items.reduce((items, item, key) => {
-                            if (key && !((key % 4)))
-                                items.push(<Clearfix key={ key } />);
-                            items.push(
-                                <Col key={ item.get('id') } lg={ 3 }>
-                                    <div className={classNames('cover')}>
-                                        <img src={ item.getIn(['cover', 'image']) }/>
+                        !items ? null : items.map((item, key) =>
+                            <Col key={ item.get('id') } lg={ 3 } md={ 6 } sm={ 12 }>
+                                <div className={ classNames('album') }>
+                                    <div className={ classNames('content') }>
+                                        <div className={ classNames('cover') }>
+                                            <img src={ item.getIn(['cover', 'image']) }/>
+                                        </div>
+                                        <div className={ classNames('title') }>
+                                            { item.get('title') }
+                                        </div>
+                                        <div className={ classNames('artist') }>
+                                            {
+                                                !item.has('artist-credit') ? null :
+                                                    item.get('artist-credit').map((credit) => credit.getIn(['artist', 'name']))
+                                            }
+                                        </div>
+                                        <div className={ classNames('year') }>
+                                            {
+                                                !item.has('date') ? null :
+                                                    new Date(item.get('date')).getFullYear() }
+                                        </div>
                                     </div>
-                                    <p>{ item.get('title') }</p>
-                                    <p>
-                                        <Button bsSize={ 'xsmall' } bsStyle={ 'success' }
-                                                onClick={ () => addAlbum(item.get('id')) }
-                                        >
-                                            <Glyphicon glyph="plus" />
-                                        </Button>
-                                        { ' ' }
-                                        <Button bsSize={ 'xsmall' } bsStyle={ 'danger' }
-                                                onClick={ () => removeAlbum(item.get('id')) }
-                                        >
-                                            <Glyphicon glyph="remove" />
-                                        </Button>
-                                    </p>
-                                </Col>
-                            );
-                            return items;
-                        }, [])
+                                </div>
+                            </Col>
+                        )
                     }
                 </Row>
             </Grid>

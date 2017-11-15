@@ -12,3 +12,55 @@
     height: 100%;
   }
 }
+
+.album {
+  width: 100%;
+  padding-bottom: 125%;
+
+  position: relative;
+  overflow: hidden;
+
+  font-size: 13px;
+  line-height: normal;
+
+  border: 2px solid transparent;
+
+  cursor: pointer;
+
+  &:hover {
+    border-color: #ffdb4d;
+  }
+
+  .content {
+    position: absolute;
+
+    width: 100%;
+    height: 100%;
+
+    padding: 10px;
+  }
+
+  .title,
+  .artist,
+  .year {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .title {
+    font-size: 15px;
+    font-weight: bold;
+    line-height: 21px;
+
+    margin: 6px 0 3px;
+  }
+
+  .artist {
+
+  }
+
+  .year {
+    margin-top: 5px;
+    color: #999999;
+  }
+}
