@@ -59,6 +59,11 @@ module.exports = (env) => {
                         sourceMap: true,
                     }
                 }]
+            }, {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader'
+                ]
             }]
         },
 

@@ -28,6 +28,7 @@
     "css-classname": "^1.1.3",
     "css-loader": "^0.28.7",
     "extract-text-webpack-plugin": "^3.0.2",
+    "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "html-webpack-template": "^6.0.2",
     "http-errors": "^1.6.2",
