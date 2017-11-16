@@ -38,7 +38,7 @@ export class AppComponent extends Component {
                 </Navbar>
                 <Grid componentClass={ 'main' } className={ classNames('content') }>
                     <Switch>
-                        <Route path='/' exact={ true } component={ Home } />
+                        <Route path='/' exact={ true } component={ Albums } />
                         <Route path='/album/:id' component={ Album } />
                         <Route path='/albums' component={ Albums } />
                         <Route path='/search' component={ Search } />
