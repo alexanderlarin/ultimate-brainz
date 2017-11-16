@@ -16,12 +16,13 @@ const storageConfig = {
 
 export function makeStore(initialState = Immutable.Map()) {
     const sagaMiddleware = createSagaMiddleware();
+    console.log(process.env.NODE_ENV);
 
     const store = createStore(makeReducers(), initialState, compose(
         applyMiddleware(sagaMiddleware),
         persistState(persistPaths, storageConfig),
 
-        // (global.window && window.devToolsExtension) ? window.devToolsExtension() : f => f
+        (process.env.NODE_ENV === 'development' && global.window && window.devToolsExtension) ? window.devToolsExtension() : f => f
     ));
 
     const api = new Api();
