@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 
 import { Home } from './Home';
+import { Album } from './Album';
 import { Albums } from './Albums';
 import { Search } from './Search';
 
@@ -39,6 +40,7 @@ export class AppComponent extends Component {
                     <main>
                         <Switch>
                             <Route path='/' exact={ true } component={ Home } />
+                            <Route path='/album/:id' component={ Album } />
                             <Route path='/albums' component={ Albums } />
                             <Route path='/search' component={ Search } />
                         </Switch>
