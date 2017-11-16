@@ -29,11 +29,11 @@ export default function(state = new Map(), action) {
             });
         }
         case GET_ALBUM_FAILURE: {
-            const { id, message } = action.error;
+            const { id, ...error } = action.error;
             return state.update('items', new List(), (items) => {
                 const idx = items.findIndex((item) => item.get('id') === id);
                 return idx === -1 ? items : items.update(idx, new Map(),
-                    (value) => value.remove('loading').set('error', message)
+                    (value) => value.remove('loading').set('error', new Map(error))
                 );
             });
         }
