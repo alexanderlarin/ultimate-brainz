@@ -24,6 +24,9 @@ module.exports = (env) => {
                     'https://maxcdn.bootstrapcdn.com/bootstrap/latest/css/bootstrap.min.css'
                 ]
             }),
+            new Webpack.DefinePlugin({
+                'process.env.NODE_ENV': JSON.stringify(env)
+            }),
             new Webpack.NamedModulesPlugin(),
             new Webpack.HotModuleReplacementPlugin()
         ],
