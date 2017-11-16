@@ -90,30 +90,40 @@ class InputComponent extends Component {
 
 export class SearchComponent extends Component {
     componentDidMount() {
-        this.search(this.props.query);
+        const { history } = this.props;
+        const query = new URLSearchParams(history.location.search).get('query') || '';
+        if (query)
+            this.search(query);
+        else {
+            const { query } = this.props;
+            if (query)
+                this.handleQuery(query);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
         const { query } = nextProps;
-        if (this.props.query !== query)
-            this.search(query);
+        this.search(query);
     }
 
     handleQuery(query) {
         const { history } = this.props;
         history.replace({ ...history.location, search: new URLSearchParams({ query }).toString() });
+        this.search(query);
     }
 
     handleMore() {
         const { query, items, searchAlbums } = this.props;
-        searchAlbums(query, 8, !items ? 0 : items.size);
+        if (items)
+            searchAlbums(query, 8, items.size);
     }
 
     search(query) {
-        const { searchAlbums, clearSearch } = this.props;
-        clearSearch();
-        if (query)
+        const { searchAlbums, updateSearch } = this.props;
+        if (this.props.query !== query) {
+            updateSearch(query);
             searchAlbums(query, 16);
+        }
     }
 
     render() {
@@ -140,19 +150,20 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
 import { addAlbum, removeAlbum } from '../core/actions/albums';
-import { searchAlbums, clearSearch } from '../core/actions/search';
+import { searchAlbums, updateSearch } from '../core/actions/search';
 
 
 export const Search = withRouter(connect(
     (state, ownProps) => {
         return {
-            query: new URLSearchParams(ownProps.location.search).get('query') || '',
+            query: state.getIn(['search', 'query'], ''),
+            // query: new URLSearchParams(ownProps.location.search).get('query') || '',
             more: state.getIn(['search', 'more']),
             items: state.getIn(['search', 'items'])
         };
     },
     (dispatch, ownProps) => bindActionCreators({
         addAlbum, removeAlbum,
-        searchAlbums, clearSearch
+        searchAlbums, updateSearch
     }, dispatch)
 )(SearchComponent));
