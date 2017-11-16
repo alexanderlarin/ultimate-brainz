@@ -4,7 +4,6 @@ import {
     GET_ALBUM_REQUEST, GET_ALBUM_SUCCESS, GET_ALBUM_FAILURE,
     ADD_ALBUM_REQUEST, REMOVE_ALBUM_REQUEST
 } from '../actions/albums';
-import { GET_ALBUM_COVER_SUCCESS } from '../actions/covers'
 
 
 export default function(state = new Map(), action) {
@@ -37,13 +36,7 @@ export default function(state = new Map(), action) {
                 );
             });
         }
-        case GET_ALBUM_COVER_SUCCESS: {
-            const { id, cover } = action.payload;
-            return state.update('items', new List(), (items) => {
-                const idx = items.findIndex((item) => item.get('id') === id);
-                return idx === -1 ? items : items.setIn([idx, 'cover', 'image'], cover);
-            });
-        }
+
         case ADD_ALBUM_REQUEST: {
             const { id } = action.payload;
             return state.update('items', new List(), (items) => {

@@ -1,6 +1,5 @@
 import { Map, List, fromJS } from 'immutable';
 
-import { GET_ALBUM_COVER_SUCCESS } from '../actions/covers';
 import {
     UPDATE_SEARCH_REQUEST,
     SEARCH_ALBUMS_REQUEST, SEARCH_ALBUMS_SUCCESS, SEARCH_ALBUMS_FAILURE
@@ -25,14 +24,6 @@ export default function(state = new Map(), action) {
         }
         case SEARCH_ALBUMS_FAILURE:
             return state.remove('loading').remove('more').set('error', new Map(action.error));
-
-        case GET_ALBUM_COVER_SUCCESS: {
-            const { id, cover } = action.payload;
-            return state.update('items', new List(), (items) => {
-                const idx = items.findIndex((item) => item.get('id') === id);
-                return idx === -1 ? items : items.update(idx, new Map(), (item) => item.setIn(['cover', 'image'], cover));
-            });
-        }
 
         default:
             return state;

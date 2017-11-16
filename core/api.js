@@ -7,6 +7,8 @@ export class Api {
     constructor() {
     }
 
+    cover(id) { return `http://coverartarchive.org/release/${id}/front`; }
+
     searchAlbums(title, limit, offset) {
         return new Promise((resolve, reject) => {
                 Client
@@ -19,7 +21,10 @@ export class Api {
                         return reject(new HttpError(err.status, res ? (res.body && res.body.error) : err.message));
                     });
             })
-            .then((response) => ({ count: response.count, items: response.releases }));
+            .then((response) => ({
+                count: response.count,
+                items: response.releases.map(({ id, ...item }) => ({ id, cover: { image: this.cover(id) }, ...item }))
+            }));
     }
 
     getAlbum(id) {
@@ -33,11 +38,7 @@ export class Api {
                         return resolve(res.body);
                     return reject(new HttpError(err.status, res ? (res.body && res.body.error) : err.message));
                 });
-        })
-            .then((response) => ({ item: response }));
-    }
-
-    getAlbumCover(id) {
-        return Promise.resolve({ cover: `http://coverartarchive.org/release/${id}/front` });
+            })
+            .then(({ id, ...item }) => ({ item: { id, cover: { image: this.cover(id) }, ...item } }));
     }
 }
