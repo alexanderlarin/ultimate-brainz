@@ -54,14 +54,14 @@ export class AlbumsCollectionComponent extends React.Component {
                                 <div className={ classNames('album') }>
                                     <div className={ classNames('content') }>
                                         <Link to={ `/album/${item.get('id')}` }>
-                                            <CoverComponent image={ item.getIn(['cover', 'image']) }/>
+                                            <CoverComponent image={ item.getIn(['cover', 'image']) } />
                                             <div className={ classNames('title') }>
                                                 { item.get('title') }
                                             </div>
                                             <div className={ classNames('artist') }>
                                                 {
                                                     !item.has('artist-credit') ? null :
-                                                        item.get('artist-credit').map((credit) => credit.getIn(['artist', 'name']))
+                                                        item.get('artist-credit').map((credit) => credit.getIn(['artist', 'name'])).join(', ')
                                                 }
                                             </div>
                                             <div className={ classNames('year') }>
