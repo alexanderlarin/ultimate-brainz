@@ -5,6 +5,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 
 import { Home } from './Home';
+import { Album } from './Album';
 import { Albums } from './Albums';
 import { Search } from './Search';
 
@@ -35,18 +36,17 @@ export class AppComponent extends Component {
                         </Nav>
                     </Navbar.Collapse>
                 </Navbar>
-                <Grid className={ classNames('content') }>
-                    <main>
-                        <Switch>
-                            <Route path='/' exact={ true } component={ Home } />
-                            <Route path='/albums' component={ Albums } />
-                            <Route path='/search' component={ Search } />
-                        </Switch>
-                    </main>
-                    <hr />
-                    <footer>
-                        <p>All Rights Reserved. Alexander Larin. 2017 =)</p>
-                    </footer>
+                <Grid componentClass={ 'main' } className={ classNames('content') }>
+                    <Switch>
+                        <Route path='/' exact={ true } component={ Home } />
+                        <Route path='/album/:id' component={ Album } />
+                        <Route path='/albums' component={ Albums } />
+                        <Route path='/search' component={ Search } />
+                    </Switch>
+                </Grid>
+                <hr/>
+                <Grid componentClass={ 'footer'} >
+                    <p>All Rights Reserved. Alexander Larin. 2017 =)</p>
                 </Grid>
             </div>
         );

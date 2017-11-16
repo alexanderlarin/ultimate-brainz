@@ -1,0 +1,38 @@
+.album-info {
+  margin-bottom: 15px;
+
+  .stamp {
+    font-size: 13px;
+    line-height: 15px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+
+    color: #777777;
+  }
+
+  .title {
+    font-size: 45px;
+    font-weight: bold;
+    line-height: 40px;
+
+    word-wrap: break-word;
+
+    margin-top: 17px;
+    margin-bottom: 5px;
+  }
+
+  .summary {
+    font-size: 15px;
+
+    color: #777777;
+  }
+
+  .artist {
+    color: #222;
+    word-wrap: break-word;
+  }
+
+  .year {
+
+  }
+}

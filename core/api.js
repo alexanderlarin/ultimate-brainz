@@ -27,6 +27,7 @@ export class Api {
             Client
                 .get(`http://musicbrainz.org/ws/2/release/${id}`)
                 .query({ fmt: 'json' })
+                .query(`inc=artist-credits+recordings`)
                 .end((err, res) => {
                     if (!err && res.ok)
                         return resolve(res.body);

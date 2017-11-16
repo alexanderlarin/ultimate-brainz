@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Grid, Col, Row } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { className, classJoin } from 'css-classname';
 
 import Cover from '../images/Cover.png';
@@ -52,21 +53,23 @@ export class AlbumsCollectionComponent extends React.Component {
                             <Col key={ item.get('id') } lg={ 3 } md={ 6 } sm={ 12 }>
                                 <div className={ classNames('album') }>
                                     <div className={ classNames('content') }>
-                                        <CoverComponent image={ item.getIn(['cover', 'image']) }/>
-                                        <div className={ classNames('title') }>
-                                            { item.get('title') }
-                                        </div>
-                                        <div className={ classNames('artist') }>
-                                            {
-                                                !item.has('artist-credit') ? null :
-                                                    item.get('artist-credit').map((credit) => credit.getIn(['artist', 'name']))
-                                            }
-                                        </div>
-                                        <div className={ classNames('year') }>
-                                            {
-                                                !item.has('date') ? null :
-                                                    new Date(item.get('date')).getFullYear() }
-                                        </div>
+                                        <Link to={ `/album/${item.get('id')}` }>
+                                            <CoverComponent image={ item.getIn(['cover', 'image']) } />
+                                            <div className={ classNames('title') }>
+                                                { item.get('title') }
+                                            </div>
+                                            <div className={ classNames('artist') }>
+                                                {
+                                                    !item.has('artist-credit') ? null :
+                                                        item.get('artist-credit').map((credit) => credit.getIn(['artist', 'name'])).join(', ')
+                                                }
+                                            </div>
+                                            <div className={ classNames('year') }>
+                                                {
+                                                    !item.has('date') ? null :
+                                                        new Date(item.get('date')).getFullYear() }
+                                            </div>
+                                        </Link>
                                     </div>
                                 </div>
                             </Col>
