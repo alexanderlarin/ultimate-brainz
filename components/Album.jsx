@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { className } from 'css-classname';
 
-import  { CoverComponent } from './Bricks';
+import  { LoadingComponent, ErrorComponent, CoverComponent } from './Bricks';
 
 const classNames = (...args) => className(require('./Album.scss'), ...args);
 
@@ -56,13 +56,13 @@ export class AlbumComponent extends Component {
 
     render() {
         const {
-            id, item, collected,
+            loading, error, item, collected,
             addAlbum, removeAlbum
         } = this.props;
         return (
             <Grid fluid={ true }>
                 {
-                    !item ? <p>Album, but not for me, ID={ id }</p> :
+                    !item || loading || error ? null :
                         <Row>
                             <Col md={ 4 }>
                                 <CoverComponent image={ item.getIn(['cover', 'image']) } />
@@ -115,6 +115,16 @@ export class AlbumComponent extends Component {
                         </Row>
                     )
                 }
+                <Row>
+                    <Col>
+                        <LoadingComponent loading={ loading }>Loading...</LoadingComponent>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ErrorComponent error={ error }>Error has been occurred:</ErrorComponent>
+                    </Col>
+                </Row>
             </Grid>
         );
     }
@@ -133,6 +143,8 @@ export const Album = connect(
         const id = ownProps.match.params.id;
         return {
             id,
+            loading: state.getIn(['album', 'items', id, 'loading'], false),
+            error: state.getIn(['album', 'items', id, 'error']),
             item: state.getIn(['album', 'items', id]),
             collected: albums && albums.find((album) => album.get('id') === id)
         };

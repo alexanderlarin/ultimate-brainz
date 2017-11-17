@@ -78,7 +78,7 @@ export class InfoComponent extends Component {
     render() {
         const { children } = this.props;
         return !children ? null : (
-            <Alert bsStyle={ 'info' }>
+            <Alert bsStyle={ 'warning' }>
                 { children }
             </Alert>
         );
