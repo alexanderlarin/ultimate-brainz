@@ -7,7 +7,7 @@ import {
 } from 'react-bootstrap';
 import { className } from 'css-classname';
 
-import { AlbumsCollectionComponent } from './Bricks';
+import { LoadingComponent, ErrorComponent, InfoComponent, AlbumsCollectionComponent } from './Bricks';
 
 const classNames = (...args) => className(require('./Search.scss'), ...args);
 
@@ -127,20 +127,41 @@ export class SearchComponent extends Component {
     }
 
     render() {
-        const { query, more, items, addAlbum, removeAlbum } = this.props;
-        return (
-            <Grid fluid={ true }>
-                <Row>
-                    <Col>
-                        <p>Search, Hard and Deep Search</p>
-                        <InputComponent value={ query } delay={ 500 } onQuery={ ::this.handleQuery }/>
-                    </Col>
-                </Row>
-                <InfiniteScroll element='div' initialLoad={ false } hasMore={ more } loadMore={ ::this.handleMore } loader={ <div>Loading...</div> }>
-                    <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
-                </InfiniteScroll>
-            </Grid>
-        );
+        const {
+            loading, error,
+            query, more, items,
+            addAlbum, removeAlbum
+        } = this.props;
+        return [
+            <Row>
+                <Col>
+                    <p>Search, Hard and Deep Search</p>
+                    <InputComponent value={ query } delay={ 500 } onQuery={ ::this.handleQuery }/>
+                </Col>
+            </Row>,
+            <InfiniteScroll element='div' initialLoad={ false }
+                            hasMore={ more } loadMore={ ::this.handleMore }
+            >
+                <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
+            </InfiniteScroll>,
+            <Row>
+                <Col>
+                    <LoadingComponent loading={ loading }>Loading...</LoadingComponent>
+                </Col>
+            </Row>,
+            <Row>
+                <Col>
+                    <ErrorComponent error={ error }>Error has been occurred:</ErrorComponent>
+                </Col>
+            </Row>,
+            <Row>
+                <Col>
+                    <InfoComponent>
+                        { !error && items && !items.size ? 'No items found. Please try another search query' : null }
+                    </InfoComponent>
+                </Col>
+            </Row>
+        ];
     }
 }
 
@@ -156,8 +177,9 @@ import { searchAlbums, updateSearch } from '../core/actions/search';
 export const Search = withRouter(connect(
     (state, ownProps) => {
         return {
+            loading: state.getIn(['search', 'loading'], false),
+            error: state.getIn(['search', 'error']),
             query: state.getIn(['search', 'query'], ''),
-            // query: new URLSearchParams(ownProps.location.search).get('query') || '',
             more: state.getIn(['search', 'more']),
             items: state.getIn(['search', 'items'])
         };
