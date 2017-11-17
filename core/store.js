@@ -16,7 +16,6 @@ const storageConfig = {
 
 export function makeStore(initialState = Immutable.Map()) {
     const sagaMiddleware = createSagaMiddleware();
-    console.log(process.env.NODE_ENV);
 
     const store = createStore(makeReducers(), initialState, compose(
         applyMiddleware(sagaMiddleware),
