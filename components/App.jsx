@@ -4,7 +4,6 @@ import { NavLink, Route, Switch } from 'react-router-dom'
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 
-import { Home } from './Home';
 import { Album } from './Album';
 import { Albums } from './Albums';
 import { Search } from './Search';

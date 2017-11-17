@@ -132,36 +132,38 @@ export class SearchComponent extends Component {
             query, more, items,
             addAlbum, removeAlbum
         } = this.props;
-        return [
-            <Row>
-                <Col>
-                    <p>Search, Hard and Deep Search</p>
-                    <InputComponent value={ query } delay={ 500 } onQuery={ ::this.handleQuery }/>
-                </Col>
-            </Row>,
-            <InfiniteScroll element='div' initialLoad={ false }
-                            hasMore={ more } loadMore={ ::this.handleMore }
-            >
-                <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
-            </InfiniteScroll>,
-            <Row>
-                <Col>
-                    <LoadingComponent loading={ loading }>Loading...</LoadingComponent>
-                </Col>
-            </Row>,
-            <Row>
-                <Col>
-                    <ErrorComponent error={ error }>Error has been occurred:</ErrorComponent>
-                </Col>
-            </Row>,
-            <Row>
-                <Col>
-                    <InfoComponent>
-                        { !error && items && !items.size ? 'No items found. Please try another search query' : null }
-                    </InfoComponent>
-                </Col>
-            </Row>
-        ];
+        return (
+            <Grid fluid={ true }>
+                <Row>
+                    <Col>
+                        <p>Search, Hard and Deep Search</p>
+                        <InputComponent value={ query } delay={ 500 } onQuery={ ::this.handleQuery }/>
+                    </Col>
+                </Row>
+                <InfiniteScroll element='div' initialLoad={ false }
+                                hasMore={ more } loadMore={ ::this.handleMore }
+                >
+                    <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
+                </InfiniteScroll>
+                <Row>
+                    <Col>
+                        <LoadingComponent loading={ loading }>Loading...</LoadingComponent>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <ErrorComponent error={ error }>Error has been occurred:</ErrorComponent>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <InfoComponent>
+                            { !error && items && !items.size ? 'No items found. Please try another search query' : null }
+                        </InfoComponent>
+                    </Col>
+                </Row>
+            </Grid>
+        );
     }
 }
 
