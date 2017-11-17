@@ -1,7 +1,7 @@
 {
   "name": "ultimate-brainz",
-  "version": "0.0.0",
-  "description": "The simple and temporary test project for http://ultimate-guitar.com based on react and http://musicbrainz.org/ database",
+  "version": "1.0.0",
+  "description": "The simple and temporary test project based on react and http://musicbrainz.org/ database",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexanderlarin/ultimate-brainz.git"
