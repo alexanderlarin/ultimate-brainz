@@ -85,6 +85,20 @@ export class InfoComponent extends Component {
     }
 }
 
+export class NotFound extends Component {
+    render() {
+        return (
+            <Row>
+                <Col>
+                    <Alert bsStyle={ 'danger'}>
+                        Oops, It seems to be this route is not found. Go <Link to={ '/' }>home</Link>
+                    </Alert>
+                </Col>
+            </Row>
+        );
+    }
+}
+
 export class AlbumsCollectionComponent extends Component {
     static propTypes = {
         items: PropTypes.object

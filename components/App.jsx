@@ -7,6 +7,7 @@ import { Navbar, Nav, NavItem, Grid } from 'react-bootstrap';
 import { Album } from './Album';
 import { Albums } from './Albums';
 import { Search } from './Search';
+import { NotFound } from './Bricks';
 
 const classNames = (...args) => className(require('./App.scss'), ...args);
 
@@ -41,6 +42,7 @@ export class AppComponent extends Component {
                         <Route path='/album/:id' component={ Album } />
                         <Route path='/albums' component={ Albums } />
                         <Route path='/search' component={ Search } />
+                        <Route component={ NotFound } />
                     </Switch>
                 </Grid>
                 <hr/>
