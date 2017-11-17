@@ -2,13 +2,72 @@ const Path = require('path');
 const Webpack = require('webpack');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = (env) => {
     process.BABEL_ENV = env;
 
+    const production = env === 'production';
+
+    const plugins = production ? [
+        new UglifyJsPlugin({ sourceMap: true })
+    ] : [
+        new Webpack.NamedModulesPlugin(),
+        new Webpack.HotModuleReplacementPlugin()
+    ];
+
+    const extractSass = new ExtractTextPlugin({
+        filename: "[name].stylesheet.css",
+        disable: !production
+    });
+
     return {
         entry: {
             app: ['babel-polyfill', Path.join(__dirname, './web')]
+        },
+        output: {
+            filename: '[name].bundle.js',
+            path: Path.resolve(__dirname, 'public'),
+            publicPath: '/'
+        },
+        resolve: {
+            modules: ['node_modules', 'components'],
+            extensions: ['.js', '.jsx']
+        },
+        module: {
+            rules: [{
+                test: /\.(js|jsx)$/,
+                exclude: /node_modules/,
+                use: [{
+                    loader: "babel-loader"
+                }],
+            }, {
+                test: /\.(png|svg|jpg|gif)$/,
+                use: [
+                    'file-loader'
+                ]
+            }, {
+                test: /\.scss$/,
+                use: extractSass.extract({
+                    use: [{
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true,
+                            modules: true,
+                            localIdentName: '[path][name]-[local]',
+                            importLoaders: 1
+                        }
+                    }, {
+                        loader: "sass-loader",
+                        options: {
+                            sourceMap: true,
+                        }
+                    }],
+
+                    fallback: "style-loader"
+                })
+            }]
         },
         plugins: [
             new CleanWebpackPlugin(['public']),
@@ -27,50 +86,10 @@ module.exports = (env) => {
             new Webpack.DefinePlugin({
                 'process.env.NODE_ENV': JSON.stringify(env)
             }),
-            new Webpack.NamedModulesPlugin(),
-            new Webpack.HotModuleReplacementPlugin()
-        ],
-        output: {
-            filename: '[name].bundle.js',
-            path: Path.resolve(__dirname, 'public'),
-            publicPath: '/'
-        },
-        resolve: {
-            modules: ['node_modules', 'components'],
-            extensions: ['.js', '.jsx']
-        },
-        module: {
-            rules: [{
-                test: /\.(js|jsx)$/,
-                exclude: /node_modules/,
-                use: [{
-                    loader: "babel-loader"
-                }],
-            }, {
-                test: /\.scss$/,
-                use: [{
-                    loader: "style-loader"
-                }, {
-                    loader: "css-loader", options: {
-                        sourceMap: true,
-                        modules: true,
-                        localIdentName: '[path][name]-[local]',
-                        importLoaders: 1
-                    }
-                }, {
-                    loader: "sass-loader", options: {
-                        sourceMap: true,
-                    }
-                }]
-            }, {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
-                ]
-            }]
-        },
+            extractSass
+        ].concat(plugins),
 
-        devtool: 'inline-source-map',
+        devtool: production ? 'source-map' : 'inline-source-map',
 
         devServer: {
             contentBase: Path.resolve(__dirname, 'public'),
