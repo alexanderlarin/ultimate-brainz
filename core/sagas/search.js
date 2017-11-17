@@ -1,4 +1,4 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { all, call, put, takeLatest } from 'redux-saga/effects';
 
 import {
     SEARCH_ALBUMS_REQUEST,
@@ -23,7 +23,7 @@ function* watchFetchSearchAlbums(...args) {
 }
 
 export default function* (...args) {
-    return yield [
+    return yield all([
         call(watchFetchSearchAlbums, ...args)
-    ];
+    ]);
 }

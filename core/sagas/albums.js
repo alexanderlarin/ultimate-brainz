@@ -1,4 +1,4 @@
-import { call, put, takeEvery } from 'redux-saga/effects';
+import { all, call, put, takeEvery } from 'redux-saga/effects';
 
 import {
     ADD_ALBUM_REQUEST,
@@ -34,8 +34,8 @@ function* watchWaitAddAlbum(...args) {
 }
 
 export default function* (...args) {
-    return yield [
+    return yield all([
         call(watchFetchAlbum, ...args),
         call(watchWaitAddAlbum, ...args)
-    ];
+    ]);
 }
