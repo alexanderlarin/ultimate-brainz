@@ -1,4 +1,4 @@
 .idea
 node_modules
+public
 *.log
-public.*

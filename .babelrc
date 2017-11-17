@@ -2,6 +2,9 @@
   "env": {
     "development": {
       "presets": [["es2015", { "modules": false }], "stage-0", "react"]
+    },
+    "production": {
+      "presets": ["es2015", "stage-0", "react"]
     }
   }
 }
