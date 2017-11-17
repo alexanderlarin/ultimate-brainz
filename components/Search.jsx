@@ -90,10 +90,10 @@ class InputComponent extends Component {
 
 export class SearchComponent extends Component {
     componentDidMount() {
-        const { history } = this.props;
+        const { history, updateSearch } = this.props;
         const query = new URLSearchParams(history.location.search).get('query') || '';
         if (query)
-            this.search(query);
+            updateSearch(query);
         else {
             const { query } = this.props;
             if (query)
@@ -107,9 +107,9 @@ export class SearchComponent extends Component {
     }
 
     handleQuery(query) {
-        const { history } = this.props;
+        const { history, updateSearch } = this.props;
         history.replace({ ...history.location, search: new URLSearchParams({ query }).toString() });
-        this.search(query);
+        updateSearch(query);
     }
 
     handleMore() {
@@ -119,9 +119,8 @@ export class SearchComponent extends Component {
     }
 
     search(query) {
-        const { searchAlbums, updateSearch } = this.props;
+        const { searchAlbums } = this.props;
         if (this.props.query !== query) {
-            updateSearch(query);
             searchAlbums(query, 16);
         }
     }
@@ -135,7 +134,6 @@ export class SearchComponent extends Component {
             <Grid fluid={ true }>
                 <Row>
                     <Col>
-                        <p>Search, Hard and Deep Search</p>
                         <InputComponent value={ query } delay={ 500 } onQuery={ ::this.handleQuery }/>
                     </Col>
                 </Row>
