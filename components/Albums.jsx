@@ -8,7 +8,7 @@ import { AlbumsCollectionComponent } from './Bricks';
 
 export class AlbumsComponent extends Component {
     render() {
-        const { items, addAlbum, removeAlbum } = this.props;
+        const { items } = this.props;
         return (
             <Grid fluid={ true }>
                 <Row>
@@ -16,7 +16,7 @@ export class AlbumsComponent extends Component {
                         <p>Your albums collection</p>
                     </Col>
                 </Row>
-                <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
+                <AlbumsCollectionComponent items={ items } />
             </Grid>
         );
     }
@@ -26,14 +26,12 @@ export class AlbumsComponent extends Component {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { addAlbum, removeAlbum } from '../core/actions/albums';
-
 
 export const Albums = connect(
     (state, ownProps) => ({
         items: state.getIn(['albums', 'items'])
     }),
     (dispatch, ownProps) => bindActionCreators({
-        addAlbum, removeAlbum
+
     }, dispatch)
 )(AlbumsComponent);

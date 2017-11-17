@@ -129,8 +129,7 @@ export class SearchComponent extends Component {
     render() {
         const {
             loading, error,
-            query, more, items,
-            addAlbum, removeAlbum
+            query, more, items
         } = this.props;
         return (
             <Grid fluid={ true }>
@@ -143,7 +142,7 @@ export class SearchComponent extends Component {
                 <InfiniteScroll element='div' initialLoad={ false }
                                 hasMore={ more } loadMore={ ::this.handleMore }
                 >
-                    <AlbumsCollectionComponent items={ items } addAlbum={ addAlbum } removeAlbum={ removeAlbum } />
+                    <AlbumsCollectionComponent items={ items } />
                 </InfiniteScroll>
                 <Row>
                     <Col>
@@ -172,7 +171,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-import { addAlbum, removeAlbum } from '../core/actions/albums';
 import { searchAlbums, updateSearch } from '../core/actions/search';
 
 
@@ -187,7 +185,6 @@ export const Search = withRouter(connect(
         };
     },
     (dispatch, ownProps) => bindActionCreators({
-        addAlbum, removeAlbum,
         searchAlbums, updateSearch
     }, dispatch)
 )(SearchComponent));
