@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Col, Row } from 'react-bootstrap';
+import {
+    Grid, Col, Row,
+    Alert
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { className, classJoin } from 'css-classname';
 
@@ -8,7 +11,7 @@ import Cover from '../images/Cover.png';
 
 const classNames = (...args) => className(require('./Bricks.scss'), ...args);
 
-export class CoverComponent extends React.Component {
+export class CoverComponent extends Component {
     static propTypes = {
         className: PropTypes.string,
         image: PropTypes.string,
@@ -38,7 +41,51 @@ export class CoverComponent extends React.Component {
     }
 }
 
-export class AlbumsCollectionComponent extends React.Component {
+export class LoadingComponent extends Component {
+    static propTypes = {
+        loading: PropTypes.bool
+    };
+
+    static defaultProps = {
+        loading: false
+    };
+
+    render() {
+        const { loading, children } = this.props;
+        return !loading ? null : (
+            <Alert bsStyle={ 'warning' }>{ children }</Alert>
+        );
+    }
+}
+
+export class ErrorComponent extends Component {
+    static propTypes = {
+        error: PropTypes.object
+    };
+
+    render() {
+        const { error, children } = this.props;
+        return !error ? null : (
+            <Alert bsStyle={ 'danger' }>
+                { children }
+                <p>{ error.get('message') }</p>
+            </Alert>
+        );
+    }
+}
+
+export class InfoComponent extends Component {
+    render() {
+        const { children } = this.props;
+        return !children ? null : (
+            <Alert bsStyle={ 'info' }>
+                { children }
+            </Alert>
+        );
+    }
+}
+
+export class AlbumsCollectionComponent extends Component {
     static propTypes = {
         items: PropTypes.object
     };
